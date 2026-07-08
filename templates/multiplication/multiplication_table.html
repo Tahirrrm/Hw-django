@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблица умножения</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { margin-bottom: 15px; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: center; }
+        th { background: #f0f0f0; }
+        .header-row th { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h1>Таблица умножения (1–10)</h1>
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th>×</th>
+                {% for col in table.0.1 %}
+                    <th>{{ forloop.counter }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row_num, row_values in table %}
+                <tr>
+                    <th>{{ row_num }}</th>
+                    {% for value in row_values %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
