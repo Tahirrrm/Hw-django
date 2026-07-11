@@ -4,31 +4,37 @@
     <meta charset="UTF-8">
     <title>Таблица умножения</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        h1 { margin-bottom: 15px; }
-        table { border-collapse: collapse; }
-        th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: center; }
-        th { background: #f0f0f0; }
-        .header-row th { background: #e0e0e0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        h1 { color: #333; }
+        table { border-collapse: collapse; margin-top: 20px; width: 100%; max-width: 600px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #ffffff; }
+        tr:hover { background-color: #f1f1f1; }
+        a { color: #007bff; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <h1>Таблица умножения (1–10)</h1>
+    <p><a href="/">← Вернуться на главную (время)</a></p>
+
     <table>
         <thead>
-            <tr class="header-row">
+            <tr>
                 <th>×</th>
-                {% for col in table.0.1 %}
+              
+                {% for val in table.0.1 %}
                     <th>{{ forloop.counter }}</th>
                 {% endfor %}
             </tr>
         </thead>
         <tbody>
-            {% for row_num, row_values in table %}
+            {% for number, row in table %}
                 <tr>
-                    <th>{{ row_num }}</th>
-                    {% for value in row_values %}
-                        <td>{{ value }}</td>
+                    <th style="background-color: #e8e8e8;">{{ number }}</th>
+                    {% for product in row %}
+                        <td>{{ product }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}
