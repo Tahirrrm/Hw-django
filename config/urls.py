@@ -59,6 +59,9 @@ urlpatterns = [
     path('toyota/', views.show_toyota, name='toyota'),
     path('honda/', views.show_honda, name='honda'),
     path('renault/', views.show_renault, name='renault'),
+    # web_form
+    path('', include('web_form.urls')),
+    path('web_form/', include('web_form.urls')),
 ]
 
 
