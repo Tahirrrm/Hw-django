@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from datetime import timedelta, date
 
+
 BOOKS_TOP = [
     {
         "title": "Война и мир",
@@ -67,6 +68,29 @@ WRITERS_DB = {
         ]
     }
 }
+CARS_DB = {
+    'toyota': {
+        'brand_name': 'Тойота',
+        'cars': [
+            {'name': 'Camry', 'model': 'XV70', 'year': 2021, 'engine': '2.5L Бензин', 'features': 'Комфортный седан, надежная подвеска'},
+            {'name': 'RAV4', 'model': 'XA50', 'year': 2022, 'engine': '2.0L Гибрид', 'features': 'Кроссовер, полный привод, экономичный расход'}
+        ]
+    },
+    'honda': {
+        'brand_name': 'Хонда',
+        'cars': [
+            {'name': 'Civic', 'model': 'FC', 'year': 2020, 'engine': '1.5L Турбо', 'features': 'Спортивный хэтчбек, отличная управляемость'},
+            {'name': 'CR-V', 'model': 'RW', 'year': 2023, 'engine': '2.4L Бензин', 'features': 'Семейный кроссовер, вместительный багажник'}
+        ]
+    },
+    'renault': {
+        'brand_name': 'Рено',
+        'cars': [
+            {'name': 'Duster', 'model': 'HM', 'year': 2022, 'engine': '1.6L Бензин', 'features': 'Внедорожник, высокая проходимость, доступная цена'},
+            {'name': 'Logan', 'model': 'II', 'year': 2021, 'engine': '1.6L Бензин', 'features': 'Надежный седан, популярен в такси'}
+        ]
+    }
+}
 def get_city_nav():
     return """
     <hr>
@@ -85,7 +109,7 @@ def home(request):
 #   1. ДАТА
     time_now = date.today()
     formatted_time = time_now.strftime("%d.%m.%Y")
-    
+
     html = f"""
     <!DOCTYPE html>
     <html lang="ru">
@@ -93,53 +117,149 @@ def home(request):
         <meta charset="UTF-8">
         <title>Главная страница</title>
         <style>
-            body {{ font-family: 'Segoe UI', sans-serif; padding: 40px; background-color: #f4f7f6; }}
-            h1 {{ color: #333; text-align: center; }}
-            .date-box {{ text-align: center; margin-bottom: 40px; font-size: 1.2em; color: #555; }}
-            .cards {{ display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }}
-            .card {{
-                width: 280px; height: 240px;
-                background: white; border-radius: 15px;
-                padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                display: flex; flex-direction: column; justify-content: center;
-                text-align: center; transition: transform 0.2s;
+            body {{ 
+                font-family: 'Segoe UI', sans-serif; 
+                padding: 40px; 
+                background-color: #f4f7f6; 
+                margin: 0;
             }}
-            .card:hover {{ transform: translateY(-5px); }}
-            .card h3 {{ margin-top: 0; color: #2c3e50; }}
-            .btn {{ margin-top: auto; display: inline-block; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; color: white; }}
+            h1 {{ 
+                color: #333; 
+                text-align: center; 
+                margin-bottom: 10px;
+            }}
+            .subtitle {{
+                text-align: center;
+                color: #666;
+                font-size: 1.1em;
+                margin-bottom: 40px;
+            }}
+            .date-box {{ 
+                text-align: center; 
+                margin-bottom: 40px; 
+                font-size: 1.2em; 
+                color: #555; 
+            }}
+            .cards {{ 
+                display: flex; 
+                justify-content: center; 
+                gap: 30px; 
+                flex-wrap: wrap; 
+                max-width: 1200px;
+                margin: 0 auto;
+            }}
+            .card {{
+                width: 280px; 
+                height: 240px;
+                background: white; 
+                border-radius: 15px;
+                padding: 25px; 
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                display: flex; 
+                flex-direction: column; 
+                justify-content: center;
+                text-align: center; 
+                transition: transform 0.2s, box-shadow 0.2s;
+                border-top: 5px solid #ccc;
+            }}
+            .card:hover {{ 
+                transform: translateY(-5px); 
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }}
+            .card h3 {{ 
+                margin-top: 0; 
+                color: #2c3e50; 
+                font-size: 1.3em;
+            }}
+            .card p {{ 
+                color: #7f8c8d; 
+                margin: 15px 0; 
+                font-size: 1em;
+            }}
+            .btn {{ 
+                margin-top: auto; 
+                display: inline-block; 
+                padding: 10px 20px; 
+                border-radius: 5px; 
+                text-decoration: none; 
+                font-weight: bold; 
+                color: white; 
+                font-size: 0.95em;
+                transition: background 0.3s;
+            }}
+            .btn:hover {{
+                opacity: 0.9;
+            }}
         </style>
     </head>
     <body>
         <h1>Добро пожаловать!</h1>
-        <div class="date-box">Сегодняшняя дата: <b>{formatted_time}</b></div>
+        <div class="subtitle">Универсальный портал знаний и интересов</div>
+        <div class="date-box">📅 Сегодня: <b>{formatted_time}</b></div>
         
         <div class="cards">
+        
+            
+            <!-- День недели -->
+            <div class="card" style="border-top: 5px solid #f39c12;">
+                 <h3>🗓️ День недели</h3>
+                <p>Узнай, какой сегодня день.</p>
+                <a href="/day/" class="btn" style="background-color: #f39c12;">Открыть →</a>
+                </div>
+            <!-- Писатели -->
             <div class="card" style="border-top: 5px solid #8e44ad;">
                 <h3>✍️ Писатели</h3>
                 <p>Биографии великих авторов.</p>
                 <a href="/writers/" class="btn" style="background-color: #8e44ad;">Перейти →</a>
             </div>
+
+            <!-- Книги -->
             <div class="card" style="border-top: 5px solid #27ae60;">
                 <h3>📖 Топ книг</h3>
                 <p>Лучшие произведения мира.</p>
                 <a href="/books/" class="btn" style="background-color: #27ae60;">Перейти →</a>
             </div>
-            
+
+            <!-- День программиста -->
             <div class="card" style="border-top: 5px solid #3498db;">
                 <h3>📅 День программиста</h3>
                 <p>Расчет 256-го дня года.</p>
                 <a href="/programmer/" class="btn" style="background-color: #3498db;">Перейти →</a>
             </div>
+
+            <!-- Таблица умножения -->
             <div class="card" style="border-top: 5px solid #2ecc71;">
                 <h3>✖️ Таблица умножения</h3>
                 <p>Классическая таблица от 1 до 10.</p>
                 <a href="/table/" class="btn" style="background-color: #2ecc71;">Перейти →</a>
             </div>
+
+            <!-- Приложение: Город -->
             <div class="card" style="border-top: 5px solid #e67e22;">
                 <h3>🏙️ Приложение: Город</h3>
-                <p>Новости, факты, контакты и руководство Чебоксар.</p>
-                <a href="/city/" class="btn" style="background-color: #e67e22;">Открыть приложение →</a>
+                <p>Новости, факты, контакты Чебоксар.</p>
+                <a href="/city/" class="btn" style="background-color: #e67e22;">Открыть →</a>
             </div>
+
+            <!-- Автомобили -->
+            <div class="card" style="border-top: 5px solid #34495e;">
+                <h3>🚗 Автомобили</h3>
+                <p>Toyota, Honda, Renault — модели и особенности.</p>
+                <a href="/toyota/" class="btn" style="background-color: #34495e;">К автомобилям →</a>
+            </div>
+
+            <!-- Музыка -->
+            <div class="card" style="border-top: 5px solid #9b59b6;">
+                <h3>🎵 Музыка</h3>
+                <p>Queen — We Are The Champions на 4 языках.</p>
+                <a href="/song/" class="btn" style="background-color: #9b59b6;">Слушать →</a>
+            </div>
+            <div class="card" style="border-top: 5px solid #8E44AD;">
+                 <h3>🎧 Наушники</h3>
+                <p>Каталог беспроводных моделей</p>
+                <a href="/headphones/" class="btn" style="background-color: #8E44AD;">Открыть →</a>
+            </div>
+         
         </div>
     </body>
     </html>
@@ -368,6 +488,7 @@ def writers_list(request, slug=None):
 
 
     # Получаем параметры из URL: ?writers=Hemingway&year=1926
+
     req_writer = request.GET.get('writers')
     req_year = request.GET.get('year')
 
@@ -607,4 +728,72 @@ def book_detail(request, book_id):
     else:
 
         return redirect('books')
+    
+
+# фреймворки часть 4
+
+def show_song(request):
+   
+    lyrics_text = "We are the champions, my friends\nQueen, We are the champions"
+    
+    context = {
+        'lyrics': lyrics_text
+    }
+    
+    return render(request, 'song.html', context)
+
+def show_song_en(request):
+    lyrics_text = "We are the champions, my friends\nQueen, We are the champions"
+    context = {'lyrics': lyrics_text, 'lang_name': 'English'}
+    return render(request, 'song.html', context)
+
+def show_song_fr(request):
+    # Перевод на французский
+    lyrics_text = "Nous sommes les champions, mes amis\nQueen, Nous sommes les champions"
+    context = {'lyrics': lyrics_text, 'lang_name': 'Français'}
+    return render(request, 'song.html', context)
+
+def show_song_de(request):
+    # Перевод на немецкий
+    lyrics_text = "Wir sind die Meister, meine Freunde\nQueen, Wir sind die Meister"
+    context = {'lyrics': lyrics_text, 'lang_name': 'Deutsch'}
+    return render(request, 'song.html', context)
+
+def show_song_es(request):
+    # Перевод на испанский
+    lyrics_text = "Somos los campeones, mis amigos\nQueen, Somos los campeones"
+    context = {'lyrics': lyrics_text, 'lang_name': 'Español'}
+    return render(request, 'song.html', context)
+
+def cars_home(request):
+    """Главная страница раздела авто (можно сделать общую подборку или просто приветствие)"""
+    context = {
+        'car_brand': 'Главная',
+        'car_data': None 
+    }
+    return render(request, 'cars.html', context)
+
+def show_toyota(request):
+    data = CARS_DB.get('toyota')
+    context = {
+        'car_brand': data['brand_name'],
+        'car_data': data['cars']
+    }
+    return render(request, 'cars.html', context)
+
+def show_honda(request):
+    data = CARS_DB.get('honda')
+    context = {
+        'car_brand': data['brand_name'],
+        'car_data': data['cars']
+    }
+    return render(request, 'cars.html', context)
+
+def show_renault(request):
+    data = CARS_DB.get('renault')
+    context = {
+        'car_brand': data['brand_name'],
+        'car_data': data['cars']
+    }
+    return render(request, 'cars.html', context)
 
