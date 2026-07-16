@@ -1,0 +1,94 @@
+# фреймворки часть 4
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Song Lyrics</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            max-width: 600px;
+        }
+        h1 { 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+        }
+        .lang-badge {
+            display: inline-block;
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        .lyrics {
+            font-size: 1.6rem;
+            line-height: 1.5;
+            font-weight: 500;
+            white-space: pre-wrap; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .artist {
+            margin-top: 30px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        .nav-links {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        a.lang-link {
+            text-decoration: none;
+            color: rgba(255,255,255,0.8);
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        a.lang-link:hover { color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🎵 Любимая песня</h1>
+        
+        <span class="lang-badge">{{ lang_name }}</span>
+        
+        <p class="lyrics">{{ lyrics }}</p>
+        
+        <div class="artist">Queen — We Are The Champions</div>
+
+        <div class="nav-links">
+            <a href="/" class="lang-link">EN</a>
+            <a href="/fr/" class="lang-link">FR</a>
+            <a href="/de/" class="lang-link">DE</a>
+            <a href="/es/" class="lang-link">ES</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ car_brand }} | Автомир</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: #ff9800; }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 { color: #333; border-bottom: 3px solid #ff9800; display: inline-block; padding-bottom: 5px; }
+        h2 { color: #555; margin-top: 40px; }
+
+        .car-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .car-image {
+            width: 100%;
+            height: 250px;
+            background-color: #ddd;
+            border-radius: 8px;
+            object-fit: cover;
+            background-image: url('https://via.placeholder.com/600x300?text={{ car_brand|default:"Auto" }}');
+            background-size: cover;
+            background-position: center;
+        }
+        .specs li {
+            list-style: none;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            color: #444;
+        }
+        .specs strong { color: #d32f2f; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="font-size: 1.5rem; font-weight: bold;">🚗 АвтоМир</div>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/toyota/">Тойота</a>
+            <a href="/honda/">Хонда</a>
+            <a href="/renault/">Рено</a>
+            <a href="/song/" style="margin-left: 40px; color: #aaa;">🎵 Музыка</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Раздел: {{ car_brand }}</h1>
+        
+        {% if car_data %}
+            {% for car in car_data %}
+                <div class="car-card">
+                    <div class="car-image"></div>
+                    <h2>{{ car.name }}</h2>
+                    <ul class="specs">
+                        <li><strong>Модель:</strong> {{ car.model }}</li>
+                        <li><strong>Год выпуска:</strong> {{ car.year }}</li>
+                        <li><strong>Двигатель:</strong> {{ car.engine }}</li>
+                        <li><strong>Особенности:</strong> {{ car.features }}</li>
+                    </ul>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Пока нет информации об автомобилях для этого раздела.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>
