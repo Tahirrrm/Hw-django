@@ -1,0 +1,30 @@
+{% extends 'starwars/base.html' %}
+
+{% block title %}Все фильмы — Звёздные войны{% endblock %}
+
+{% block content %}
+    <h1>Все фильмы серии</h1>
+    <p style="color: #999;">Источник данных: <a href="https://swapi.dev/" style="color:#ffe81f;">swapi.dev</a></p>
+
+    {% if error %}
+        <div class="error">
+            Не удалось получить данные от SWAPI. Проверьте подключение к интернету и попробуйте ещё раз.
+        </div>
+    {% elif films %}
+        <ul class="film-list">
+            {% for film in films %}
+                <li>
+                    <a href="{% url 'film_detail' film.id %}">
+                        <span class="episode">Эпизод {{ film.episode_id }}</span>
+                        <span style="flex:1; margin-left:15px;">{{ film.title }}</span>
+                        <span class="meta">{{ film.release_date }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Фильмы не найдены.</p>
+    {% endif %}
+
+    <a class="back" href="/">← На главную</a>
+{% endblock %}

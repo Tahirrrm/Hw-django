@@ -1,0 +1,26 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}{{ article.title|default:"Новая статья" }}{% endblock %}
+{% block heading %}{% if article %}Редактирование статьи{% else %}Новая статья{% endif %}{% endblock %}
+{% block content %}
+{% if form_error %}<div class="error">{{ form_error }}</div>{% endif %}
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        <label>Заголовок
+            <input type="text" name="title" value="{{ article.title|default:'' }}" required>
+        </label>
+        <label>Краткое описание (необязательно)
+            <input type="text" name="short_text" value="{{ article.short_text|default:'' }}">
+        </label>
+        <label>Содержание
+            <textarea name="content" rows="12" required>{{ article.content|default:'' }}</textarea>
+        </label>
+        <div class="form-check">
+            <input type="checkbox" name="is_published" id="pub" {% if article.is_published or not article %}checked{% endif %}>
+            <label for="pub" style="margin:0;">Опубликовать сразу</label>
+        </div>
+        <button class="btn btn-green" type="submit">Сохранить</button>
+        <a class="btn btn-gray" href="{% url 'admin_articles' %}">Отмена</a>
+    </form>
+</div>
+{% endblock %}

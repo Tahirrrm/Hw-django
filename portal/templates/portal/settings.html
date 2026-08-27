@@ -1,0 +1,28 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Оформление новостного портала города{% endblock %}
+{% block heading %}Настройки оформления{% endblock %}
+{% block content %}
+<div class="card">
+    <p class="muted">Изменения применяются ко всему проекту мгновенно (все страницы).</p>
+    <form method="post">
+        {% csrf_token %}
+        <label>Цвет фона
+            <input type="color" name="background_color" value="{{ settings.background_color }}">
+        </label>
+        <label>Цвет шрифта
+            <input type="color" name="font_color" value="{{ settings.font_color }}">
+        </label>
+        <label>Размер шрифта (px)
+            <input type="number" name="font_size" min="10" max="40" value="{{ settings.font_size|cut:'px' }}">
+        </label>
+        <button class="btn btn-blue" type="submit">Сохранить</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Предпросмотр</h3>
+    <div style="background:{{ settings.background_color }}; color:{{ settings.font_color }}; font-size:{{ settings.font_size }}; padding:20px; border-radius:8px; border:1px solid #cfd8dc;">
+        Пример текста портала с выбранными настройками.
+    </div>
+</div>
+{% endblock %}

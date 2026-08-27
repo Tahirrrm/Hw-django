@@ -259,8 +259,20 @@ def home(request):
                 <p>Каталог беспроводных моделей</p>
                 <a href="/headphones/" class="btn" style="background-color: #8E44AD;">Открыть →</a>
             </div>
-         
-        </div>
+
+            <!-- Звёздные войны -->
+            <div class="card" style="border-top: 5px solid #ffe81f;">
+                <h3>⭐ Звёздные войны</h3>
+                <p>Все фильмы серии через API swapi.dev</p>
+                <a href="/swapi/" class="btn" style="background-color: #1a1a2e;">Смотреть →</a>
+            </div>
+            <!-- Портал -->
+            <div class="card" style="border-top: 5px solid #4fc3f7;">
+                <h3>🌐 Портал</h3>
+                <p>Статьи, новости и админ-панель</p>
+                <a href="/articles/" class="btn" style="background-color: #0277bd;">Открыть →</a>
+            </div>
+         </div>
     </body>
     </html>
     """

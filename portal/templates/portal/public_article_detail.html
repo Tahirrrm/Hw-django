@@ -1,0 +1,59 @@
+{% extends 'portal/base_public.html' %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>{{ article.title }}</h1>
+    <div class="meta">
+        Автор: {{ article.author.username }} · {{ article.created_at|date:"d.m.Y H:i" }} ·
+        👁 {{ article.views_count }} просмотров · 🔖 {{ article.saves_count }} сохранений
+    </div>
+    <p style="line-height:1.7; white-space:pre-line;">{{ article.content }}</p>
+
+    {% if user.is_authenticated %}
+    <div style="display:flex; gap:10px; margin-top:15px;">
+        <form method="post">
+            {% csrf_token %}
+            {% if is_saved %}
+                <button class="btn btn-blue" name="action" value="unsave">↩️ Убрать из сохранённых</button>
+            {% else %}
+                <button class="btn btn-blue" name="action" value="save">🔖 Сохранить на потом</button>
+            {% endif %}
+        </form>
+        {% if user_is_admin %}
+        <a class="btn btn-gray" href="{% url 'admin_article_edit' article.id %}">Редактировать</a>
+        {% endif %}
+    </div>
+    {% else %}
+    <p class="muted" style="margin-top:15px;"><a href="{% url 'portal_login' %}">Войдите</a>, чтобы сохранять статьи на потом.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>💬 Комментарии ({{ comments|length }})</h2>
+    {% if comments %}
+        {% for c in comments %}
+        <div class="comment">
+            <b>{{ c.author.username }}</b> <span class="meta">{{ c.created_at|date:"d.m.Y H:i" }}</span><br>
+            {{ c.text }}
+            {% if user_is_admin %}
+            <br><a class="btn btn-red" style="margin-top:6px; padding:3px 9px; font-size:.8em;" href="{% url 'admin_comment_delete' c.id %}">Удалить</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="muted">Комментариев пока нет.</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <form method="post" style="margin-top:15px;">
+        {% csrf_token %}
+        <label>Оставить комментарий<textarea name="comment" rows="3" required></textarea></label>
+        <button class="btn btn-blue" name="action" value="comment">Отправить</button>
+    </form>
+    {% else %}
+    <p class="muted" style="margin-top:15px;"><a href="{% url 'portal_login' %}">Войдите</a>, чтобы оставлять комментарии.</p>
+    {% endif %}
+</div>
+
+<p><a href="{% url 'articles_public' %}">← Ко всем статьям</a></p>
+{% endblock %}

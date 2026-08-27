@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'day_of_week',
     'headphones',
-    
+    'starwars',
+    'portal',
     
 ]
 
@@ -52,9 +53,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'portal.middleware.BanMiddleware',
+    'portal.middleware.ThemeMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+LOGIN_URL = 'portal_login'
+LOGIN_REDIRECT_URL = 'articles_public'
 
 TEMPLATES = [
     {
@@ -67,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'portal.context_processors.user_is_admin_processor',
             ],
         },
     },

@@ -1,0 +1,9 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Ошибка{% endblock %}
+{% block heading %}Ошибка{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="error">{{ message }}</div>
+    <a class="btn btn-gray" href="javascript:history.back()">Назад</a>
+</div>
+{% endblock %}

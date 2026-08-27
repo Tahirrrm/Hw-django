@@ -1,0 +1,28 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Новый пользователь{% endblock %}
+{% block heading %}Добавление пользователя{% endblock %}
+{% block content %}
+{% if errors %}
+<div class="error">{% for e in errors %}{{ e }}<br>{% endfor %}</div>
+{% endif %}
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        <label>Логин
+            <input type="text" name="username" required>
+        </label>
+        <label>Пароль
+            <input type="password" name="password" required>
+        </label>
+        <label>Email
+            <input type="email" name="email">
+        </label>
+        <div class="form-check">
+            <input type="checkbox" name="is_admin" id="adm">
+            <label for="adm" style="margin:0;">Сделать администратором (группа «Администраторы»)</label>
+        </div>
+        <button class="btn btn-green" type="submit">Создать</button>
+        <a class="btn btn-gray" href="{% url 'admin_users' %}">Отмена</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Комментарии{% endblock %}
+{% block heading %}Управление комментариями{% endblock %}
+{% block content %}
+{% if items %}
+<div class="card">
+    <table>
+        <tr><th>Текст</th><th>Автор</th><th>Статья</th><th>Дата</th><th>Действия</th></tr>
+        {% for c in items %}
+        <tr>
+            <td>{{ c.text }}</td>
+            <td>{{ c.author.username }}</td>
+            <td><a href="{% url 'article_detail' c.article_id %}">{{ c.article.title }}</a></td>
+            <td>{{ c.created_at|date:"d.m.Y H:i" }}</td>
+            <td><a class="btn btn-red" href="{% url 'admin_comment_delete' c.id %}">Удалить</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<div class="card"><p class="muted">Комментариев пока нет.</p></div>
+{% endif %}
+{% endblock %}
