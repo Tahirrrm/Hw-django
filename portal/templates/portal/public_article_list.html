@@ -1,0 +1,36 @@
+{% extends 'portal/base_public.html' %}
+{% block title %}Статьи{% endblock %}
+
+{% block content %}
+<h1>📰 Новости и статьи</h1>
+<p class="muted">Просматривайте материалы, оставляйте комментарии и сохраняйте статьи для дальнейшего прочтения.</p>
+
+{% if not user.is_authenticated %}
+<div class="card" style="background:#fff8e1;">
+    <b>Добро пожаловать на новостной портал города!</b> Для комментариев и сохранения статей <a href="{% url 'portal_login' %}">войдите</a> или <a href="{% url 'portal_register' %}">зарегистрируйтесь</a>. Администратор может публиковать материалы, редактировать их, управлять пользователями, банами, комментариями, оформлением и статистикой — <a href="{% url 'admin_dashboard' %}" style="color:#ef6c00;">панель администратора</a> доступна только группе «Администраторы».
+</div>
+{% elif user_is_admin %}
+<div class="admin-strip">
+    <b>Вы администратор.</b>
+    <a class="btn btn-blue" href="{% url 'admin_article_new' %}">➕ Опубликовать статью</a>
+    <a class="btn btn-gray" href="{% url 'admin_articles' %}">Управление материалами</a>
+    <a class="btn btn-gray" href="{% url 'admin_users' %}">Пользователи и баны</a>
+    <a class="btn btn-gray" href="{% url 'admin_settings' %}">Оформление</a>
+    <a class="btn btn-gray" href="{% url 'admin_stats' %}">Статистика</a>
+</div>
+{% endif %}
+
+{% for a in items %}
+<div class="card">
+    <div class="article-title"><a href="{% url 'article_detail' a.id %}">{{ a.title }}</a></div>
+    <div class="meta">
+        {{ a.author.username }} · {{ a.created_at|date:"d.m.Y H:i" }} ·
+        👁 {{ a.views_count }} · 💬 {{ a.comments_count }} · 🔖 {{ a.saves_count }}
+    </div>
+    {% if a.short_text %}<p>{{ a.short_text }}</p>{% endif %}
+    <a class="btn btn-blue" href="{% url 'article_detail' a.id %}">Читать →</a>
+</div>
+{% empty %}
+<div class="card"><p class="muted">Материалов пока нет. Администратор может добавить первый материал в админ-панели.</p></div>
+{% endfor %}
+{% endblock %}

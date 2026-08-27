@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Новостной портал города{% endblock %}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: #333; margin: 0; padding: 0; }
+        .wrap { max-width: 900px; margin: 24px auto; padding: 0 20px; }
+        header { background: #1f2d3d; padding: 0; }
+        .hrow { max-width: 900px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        header .logo { font-weight: bold; font-size: 1.15em; color: #fff; text-decoration: none; }
+        header .logo span { color: #4fc3f7; }
+        header nav.user a { color: #cbd5e0; text-decoration: none; margin-left: 14px; font-size: .92em; }
+        header nav.user a:hover { color: #fff; }
+        .subnav { background: #27374d; border-top: 1px solid #2c3e50; }
+        .subnav-inner { max-width: 900px; margin: 0 auto; padding: 8px 20px; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+        .subnav a { color: #90b4d6; text-decoration: none; font-size: .88em; }
+        .subnav a:hover { color: #fff; }
+        .btn-logout { background: #45536b; color: #fff; border: none; border-radius: 5px; padding: 5px 12px; cursor: pointer; font-size: .85em; margin-left: 12px; }
+        .card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.06); margin-bottom: 20px; }
+        h1 { font-size: 1.5em; color: #1f2d3d; }
+        a { color: #0277bd; }
+        input[type=text], input[type=email], input[type=password], textarea {
+            width: 100%; padding: 9px 12px; border: 1px solid #cfd8dc; border-radius: 6px; font-size: .95em; font-family: inherit; margin-top: 4px;
+        }
+        label { font-size: .9em; color: #546e7a; display: block; margin-bottom: 14px; font-weight: 600; }
+        .btn { display: inline-block; padding: 9px 16px; border-radius: 6px; font-size: .95em; text-decoration: none; border: none; cursor: pointer; }
+        .btn-blue { background: #0277bd; color: #fff; }
+        .btn-gray { background: #78909c; color: #fff; }
+        .btn-red { background: #c62828; color: #fff; }
+        .btn:hover { opacity: .88; }
+        .error { background: #ffebee; color: #c62828; padding: 10px 14px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #ef9a9a; }
+        .muted { color: #90a4ae; }
+        .article-title { font-size: 1.25em; margin-bottom: 4px; }
+        .meta { color: #78909c; font-size: .85em; margin-bottom: 10px; }
+        .comment { border-top: 1px solid #eceff1; padding: 12px 0; }
+        .admin-strip { background: #e3f2fd; padding: 14px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="hrow">
+        <a class="logo" href="{% url 'home' %}">🏙️ Новостной портал города</a>
+        <nav class="user">
+            {% if user.is_authenticated %}
+                <a href="{% url 'articles_public' %}">Статьи</a>
+                <a href="{% url 'my_saved' %}">Сохранённые</a>
+                {% if user_is_admin %}<a href="{% url 'admin_dashboard' %}" style="color:#4fc3f7;">Админ-панель</a>{% endif %}
+                <span style="color:#cbd5e0;">{{ user.username }}</span>
+                <form method="post" action="{% url 'portal_logout' %}" style="display:inline;">
+                    {% csrf_token %}<button class="btn-logout" type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'portal_login' %}">Вход</a>
+                <a href="{% url 'portal_register' %}">Регистрация</a>
+            {% endif %}
+        </nav>
+    </div>
+    <div class="subnav">
+        <div class="subnav-inner">
+            <a href="/">Главная</a>
+            <a href="/day/">День недели</a>
+            <a href="/writers/">Писатели</a>
+            <a href="/books/">Книги</a>
+            <a href="/city/">Город</a>
+            <a href="/cars/">Автомобили</a>
+            <a href="/song/">Музыка</a>
+            <a href="/headphones/">Наушники</a>
+            <a href="/swapi/">Звёздные войны</a>
+            {% if user_is_admin %}<a href="{% url 'admin_dashboard' %}" style="color:#4fc3f7;">⚙️ Админка</a>{% endif %}
+        </div>
+    </div>
+</header>
+<div class="wrap">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

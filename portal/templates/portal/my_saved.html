@@ -1,0 +1,15 @@
+{% extends 'portal/base_public.html' %}
+{% block title %}Сохранённые статьи{% endblock %}
+{% block content %}
+<h1>🔖 Сохранённые статьи</h1>
+{% if saved %}
+    {% for s in saved %}
+    <div class="card">
+        <div class="article-title"><a href="{% url 'article_detail' s.article_id %}">{{ s.article.title }}</a></div>
+        <div class="meta">Сохранено: {{ s.created_at|date:"d.m.Y H:i" }} · 👁 {{ s.article.views_count }} просмотров</div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="card"><p class="muted">Вы пока ничего не сохранили.</p></div>
+{% endif %}
+{% endblock %}

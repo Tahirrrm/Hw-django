@@ -1,0 +1,16 @@
+{% extends 'portal/base_public.html' %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Вход на новостной портал города</h1>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label>Логин<input type="text" name="username" required></label>
+        <label>Пароль<input type="password" name="password" required></label>
+        <button class="btn btn-blue" type="submit">Войти</button>
+    </form>
+    <p class="muted" style="margin-top:15px;">Нет аккаунта? <a href="{% url 'portal_register' %}">Зарегистрируйтесь</a></p>
+    <p class="muted" style="font-size:.85em;">Администратор добавляет пользователей и выдаёт доступ к админ-панели.</p>
+</div>
+{% endblock %}

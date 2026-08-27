@@ -1,0 +1,40 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Главная — админ-панель{% endblock %}
+{% block heading %}Обзор новостного портала города{% endblock %}
+{% block content %}
+<div class="stats-grid">
+    <div class="stat"><div class="num">{{ articles_count }}</div><div class="cap">Всего материалов</div></div>
+    <div class="stat"><div class="num">{{ published_count }}</div><div class="cap">Опубликовано</div></div>
+    <div class="stat"><div class="num">{{ comments_count }}</div><div class="cap">Комментариев</div></div>
+    <div class="stat"><div class="num">{{ users_count }}</div><div class="cap">Пользователей</div></div>
+    <div class="stat"><div class="num">{{ banned_count }}</div><div class="cap">Активных банов</div></div>
+</div>
+
+<div class="card" style="margin-top:20px;">
+    <h3>Группа администраторов</h3>
+    <p class="muted">Доступ к этой панели есть только у пользователей группы «{{ admin_group.name }}».</p>
+    <table>
+        <tr><th>Участники</th><th>Кол-во</th></tr>
+        {% for u in admin_group.user_set.all %}
+        <tr><td>{{ u.username }}</td><td></td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="card">
+    <h3>Текущее оформление</h3>
+    <p>
+        Фон: <b>{{ settings.background_color }}</b> ·
+        Цвет шрифта: <b>{{ settings.font_color }}</b> ·
+        Размер шрифта: <b>{{ settings.font_size }}</b>
+    </p>
+    <a class="btn btn-blue" href="{% url 'admin_settings' %}">Изменить оформление</a>
+</div>
+
+<div class="card">
+    <h3>Быстрые действия</h3>
+    <a class="btn btn-green" href="{% url 'admin_article_new' %}">Новая статья</a>
+    <a class="btn btn-orange" href="{% url 'admin_user_add' %}">Добавить пользователя</a>
+    <a class="btn btn-blue" href="{% url 'admin_stats' %}">Статистика</a>
+</div>
+{% endblock %}

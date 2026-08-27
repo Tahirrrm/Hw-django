@@ -1,15 +1,19 @@
 
 from django.contrib import admin
 from django.urls import path,include
-from . import views  
+from . import views
+from portal import views as portal_views
 
 urlpatterns = [
      
 
  path('admin/', admin.site.urls),
 
-    # Главная
-    path('', views.home, name='home'),
+    # Главная страница = портал (статьи, комментарии, сохранения)
+    # Административная часть задания (CRUD статей, пользователи, баны,
+    # комментарии, оформление, статистика) живёт в app "portal" и доступна
+    # по адресам /admin-panel/... — маршруты описаны ниже в include().
+    path('', portal_views.articles_public, name='home'),
 
     # Отдельные приложения
     path('day/', include('day_of_week.urls')),
@@ -59,9 +63,12 @@ urlpatterns = [
     path('toyota/', views.show_toyota, name='toyota'),
     path('honda/', views.show_honda, name='honda'),
     path('renault/', views.show_renault, name='renault'),
-    # web_form
-    path('', include('web_form.urls')),
-    path('web_form/', include('web_form.urls')),
+
+    # Звёздные войны (SWAPI) — отдельное приложение
+    path('swapi/', include('starwars.urls')),
+
+    # Портал: статьи, пользователи, админ-панель — на уровне основного проекта
+    path('', include('portal.urls')),
 ]
 
 

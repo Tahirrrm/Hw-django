@@ -1,0 +1,52 @@
+{% extends 'starwars/base.html' %}
+
+{% block title %}{{ film.title|default:"Фильм" }} — Звёздные войны{% endblock %}
+
+{% block content %}
+    {% if error or not film %}
+        <h1>Фильм #{{ film_id }}</h1>
+        <div class="error">
+            Не удалось получить информацию о фильме от SWAPI. Проверьте подключение к интернету и попробуйте ещё раз.
+        </div>
+    {% else %}
+        <span class="episode-badge">Эпизод {{ film.episode_id }}</span>
+        <h1>{{ film.title }}</h1>
+
+        <table class="info-table">
+            <tr><th>Режиссёр</th><td>{{ film.director }}</td></tr>
+            <tr><th>Продюсер</th><td>{{ film.producer }}</td></tr>
+            <tr><th>Дата выхода</th><td>{{ film.release_date }}</td></tr>
+        </table>
+
+        <h2 style="color:#ffe81f; margin-top:35px;">Вступительный текст</h2>
+        <div class="crawl">{{ film.opening_crawl }}</div>
+
+        <h2 style="color:#ffe81f; margin-top:35px;">Персонажи</h2>
+        <ul class="entities">
+            {% for name in film.characters %}<li>{{ name }}</li>{% endfor %}
+        </ul>
+
+        <h2 style="color:#ffe81f; margin-top:35px;">Планеты</h2>
+        <ul class="entities">
+            {% for name in film.planets %}<li>{{ name }}</li>{% endfor %}
+        </ul>
+
+        <h2 style="color:#ffe81f; margin-top:35px;">Звёздные корабли</h2>
+        <ul class="entities">
+            {% for name in film.starships %}<li>{{ name }}</li>{% endfor %}
+        </ul>
+
+        <h2 style="color:#ffe81f; margin-top:35px;">Транспорт</h2>
+        <ul class="entities">
+            {% for name in film.vehicles %}<li>{{ name }}</li>{% endfor %}
+        </ul>
+
+        <h2 style="color:#ffe81f; margin-top:35px;">Расы</h2>
+        <ul class="entities">
+            {% for name in film.species %}<li>{{ name }}</li>{% endfor %}
+        </ul>
+    {% endif %}
+
+    <br>
+    <a class="back" href="{% url 'film_list' %}">← Ко всем фильмам</a>
+{% endblock %}

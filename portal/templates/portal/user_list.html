@@ -1,0 +1,47 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Пользователи{% endblock %}
+{% block heading %}Управление пользователями{% endblock %}
+{% block content %}
+<div class="card">
+    <a class="btn btn-green" href="{% url 'admin_user_add' %}">➕ Добавить пользователя</a>
+</div>
+<div class="card">
+    <table>
+        <tr>
+            <th>Логин</th><th>Email</th><th>Дата регистрации</th><th>Роли</th><th>Бан</th><th>Действия</th>
+        </tr>
+        {% for u in items %}
+        <tr>
+            <td><b>{{ u.username }}</b></td>
+            <td>{{ u.email|default:"—" }}</td>
+            <td>{{ u.date_joined|date:"d.m.Y H:i" }}</td>
+            <td>
+                {% if u.is_superuser %}<span class="label label-red">Суперпользователь</span>{% endif %}
+                {% if u.groups.all %}<span class="label label-blue" style="background:#e3f2fd;color:#01579b;">{{ u.groups.all|join:", " }}</span>{% endif %}
+                {% if not u.is_superuser and not u.groups.all %}<span class="label label-gray">Пользователь</span>{% endif %}
+            </td>
+            <td>
+                {% if u.ban %}
+                    {% if u.ban.is_active %}
+                        <span class="label label-red">До {{ u.ban.banned_until|default:"навсегда" }}</span>
+                    {% else %}
+                        <span class="label label-green">Разбанен</span>
+                    {% endif %}
+                {% else %}
+                    <span class="muted">Нет</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if not u.is_superuser %}
+                    <a class="btn btn-orange" href="{% url 'admin_user_ban' u.id %}">Бан</a>
+                    {% if u.ban %}<a class="btn btn-green" href="{% url 'admin_user_unban' u.id %}">Разбан</a>{% endif %}
+                    <a class="btn btn-red" href="{% url 'admin_user_delete' u.id %}">Удалить</a>
+                {% else %}
+                    <span class="muted">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

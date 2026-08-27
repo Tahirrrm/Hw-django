@@ -1,0 +1,23 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Бан пользователя{% endblock %}
+{% block heading %}Бан: {{ object_label }}{% endblock %}
+{% block content %}
+<div class="card">
+    <p>Выберите срок бана. «Навсегда» снимается только разбаном вручную.</p>
+    <form method="post">
+        {% csrf_token %}
+        <label>Срок бана
+            <select name="duration">
+                {% for key, value in durations.items %}
+                <option value="{{ key }}">{{ value.0 }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>Причина (необязательно)
+            <input type="text" name="reason" placeholder="Например: спам в комментариях">
+        </label>
+        <button class="btn btn-red" type="submit">Забанить</button>
+        <a class="btn btn-gray" href="{% url 'admin_users' %}">Отмена</a>
+    </form>
+</div>
+{% endblock %}

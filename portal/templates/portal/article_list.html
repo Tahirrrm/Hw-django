@@ -1,0 +1,40 @@
+{% extends 'portal/base_admin.html' %}
+{% block title %}Статьи{% endblock %}
+{% block heading %}Управление статьями и новостями{% endblock %}
+{% block content %}
+<div class="card">
+    <a class="btn btn-green" href="{% url 'admin_article_new' %}">➕ Новая статья</a>
+</div>
+{% if items %}
+<div class="card">
+    <table>
+        <tr>
+            <th>Заголовок</th><th>Автор</th><th>Просмотры</th><th>Комментарии</th><th>Сохранения</th><th>Статус</th><th>Действия</th>
+        </tr>
+        {% for a in items %}
+        <tr>
+            <td><a href="{% url 'article_detail' a.id %}">{{ a.title }}</a></td>
+            <td>{{ a.author.username }}</td>
+            <td>{{ a.views_count }}</td>
+            <td>{{ a.comments_count }}</td>
+            <td>{{ a.saves_count }}</td>
+            <td>
+                {% if a.is_published %}
+                <span class="label label-green">Опубликована</span>
+                {% else %}
+                <span class="label label-gray">Черновик</span>
+                {% endif %}
+            </td>
+            <td>
+                <a class="btn btn-blue" href="{% url 'admin_article_edit' a.id %}">Ред.</a>
+                <a class="btn btn-orange" href="{% url 'admin_article_toggle' a.id %}">{{ a.is_published|yesno:"Снять,Опубл." }}</a>
+                <a class="btn btn-red" href="{% url 'admin_article_delete' a.id %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<div class="card"><p class="muted">Пока нет материалов. Создайте первую статью.</p></div>
+{% endif %}
+{% endblock %}
